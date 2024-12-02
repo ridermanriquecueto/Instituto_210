@@ -1,0 +1,43 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Inscripcion Materia{% endblock %}
+
+{% block content %}
+{% if request.user.is_staff or request.user.is_superuser or request.user.is_admin %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inscripción Materia</title>
+    <style>
+        body {
+            overflow-y:hidden;
+          }
+    </style>  
+</head>
+<body>
+    <h1>Inscripción Materia</h1>
+    <div class="card" style="background-color: #d7d1dc">
+        <div class="card-body">      
+    <form method="post" style="font-size: 1.9em;">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <script>
+            document.getElementById("id_aprobada").hidden=true
+            document.getElementById("id_aprobada").previousElementSibling.hidden=true
+        </script>
+        <br>
+        <button class="btn btn-primary" type="submit" style="margin-left: 90px;">Inscribirse</button>
+    </form>
+    {% else %}
+
+    <div class="text-center">
+        <img src="/static/imagenes/error403.jpg" class="rounded"></img>
+        <br>
+      <h3>No deberías estar acá. Para volver, <a href="/">hace click acá</a></h3>
+    </div>
+</div>
+</div>
+    {% endif %}
+    {%endblock%}
+</body>
+</html>

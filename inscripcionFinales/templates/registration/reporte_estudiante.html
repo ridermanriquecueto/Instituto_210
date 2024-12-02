@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Constancia de Porcentaje Aprobado</title>
+    <style>
+        body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        font-size: 18px;
+    }
+    .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        font-size: 12px;
+    }
+    .header img {
+        width: 150px;
+    }
+    p {
+        font-size: 13px; 
+    }
+    .header-text {
+        text-align: center;
+        line-height: 1.2; 
+    }
+    .header-text h4 {
+        margin: 0;
+    }
+    table {
+        width: 900px;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+    th, td {
+        border: 1px solid black;
+        padding: 2px;
+        text-align: left;
+        font-size: 12px;
+    }
+    .center {
+        text-align: center;
+    }
+    .signature {
+        margin-top: 50px;
+    }
+    .signature div {
+        display: inline-block;
+        width: 45%;
+        text-align: center;
+    }
+</style>
+</head>
+
+<body>
+<div class="header">
+    <div class="logo">
+        <img src="/static/imagenes/Logo-Cultura.png" alt="Logo Educación">
+        <h4 style='font-size: 12px;'>SUBSECRETARÍA DE EDUCACIÓN</h4>
+    </div>
+    <div class="header-text">
+        <h4>DIRECCIÓN DE EDUCACIÓN SUPERIOR</h4>
+        <h4>INSTITUTO SUPERIOR DE FORMACIÓN</h4>
+        <h4>DOCENTE Y TÉCNICA Nº 210</h4>
+    </div>
+</div>
+
+<h4 style="text-align: center;"><small>CONSTANCIA DEL PORCENTAJE DE PERSPECTIVAS, ESPACIOS Y ÁREAS APROBADAS</small></h4>
+<p style="text-indent: 40px;">
+    Se deja constancia de que <strong> {{ usuario.nombre_completo }} </strong> DNI <strong>Nº {{ usuario.dni }}</strong> es alumno regular de este establecimiento en la especialidad 
+    
+    <strong>
+            {{ carrera.nombre_carrera|upper }}
+    </strong>
+    Resolución 
+    <strong>
+            {{ carrera.num_resolucion }}
+    </strong>
+     y ha acreditado las Perspectivas, Espacios o Áreas del plan de estudio, cuyo detalle figura al pie, que totalizan el <strong>{{ porcentaje_aprobado }}%</strong>, de la carrera aprobada.
+</p>     
+<table border="1">
+    <thead>
+        <tr>
+          <th rowspan="2"style='width: 100px;'>Curso</th>
+          <th rowspan="2"style='width: 225px;'>Asignaturas</th>
+          <th colspan="2"style='width: 225px;'>Calificación</th>
+          <th rowspan="2"style='width: 100px;'>Fecha</th>
+        </tr>
+        <tr>
+          <th style='width: 150px;'>En N°</th>
+          <th style='width: 150px;'>En Letras</th>
+        </tr>
+      </thead>
+    <tbody>
+    <tr>
+        <td rowspan="9">1er Año</td>
+    </tr>
+   {%for materia in materias_primero%} 
+    <tr>
+        <td>{{materia.materia}}</td>
+        <td>{{materia.nota_final}}</td>
+        <td>{{materia.nota_texto}}</td>
+        <td></td>
+    </tr>
+    {% endfor %}
+  </table>
+<table border="1">
+    <thead>
+        <tr>
+          <th rowspan="2"style='width: 100px;'>Curso</th>
+          <th rowspan="2"style='width: 225px;'>Asignaturas</th>
+          <th colspan="2"style='width: 225px;'>Calificación</th>
+          <th rowspan="2"style='width: 100px;'>Fecha</th>
+        </tr>
+        <tr>
+          <th style='width: 150px;'>En N°</th>
+          <th style='width: 150px;'>En Letras</th>
+        </tr>
+      </thead>
+    <tbody>
+    <tr>
+        <td rowspan="9">2do Año</td>
+    </tr>
+   {%for materia in materias_segundo%} 
+    <tr>
+        <td>{{materia.materia}}</td>
+        <td>{{materia.nota_final}}</td>
+        <td>{{materia.nota_texto}}</td>
+        <td></td>
+    </tr>
+    {% endfor %}
+</table>
+<table border="1">
+    <thead>
+      <tr>
+        <th rowspan="2"style='width: 100px;'>Curso</th>
+        <th rowspan="2"style='width: 225px;'>Asignaturas</th>
+        <th colspan="2"style='width: 225px;'>Calificación</th>
+        <th rowspan="2"style='width: 100px;'>Fecha</th>
+      </tr>
+      <tr>
+        <th style='width: 150px;'>En N°</th>
+        <th style='width: 150px;'>En Letras</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td rowspan="9">3er Año</td>
+    </tr>
+   {%for materia in materias_tercero%} 
+    <tr>
+        <td>{{materia.materia}}</td>
+        <td>{{materia.nota_final}}</td>
+        <td>{{materia.nota_texto}}</td>
+        <td></td>
+    </tr>
+    {% endfor %}
+</table>
+<p style='text-align:center '>A pedido del interesado y al solo efecto de ser presentado ante las autoridades que estime corresponder, se extiende la presente constancia, en la ciudad de La Plata a <span id='los'>los</span> <span id='dia_numero'>{{fecha|date:"d"}}</span>  <span id='dias'>días</span> del mes de <span id='mes_texto'>{{ fecha|date:"m" }}</span> del año {{fecha|date:"Y" }} </p>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class="footer">
+    <div>
+        <h4>Sello del establecimiento</h4>
+    </div>
+    <div>
+        <h4>Firma y sello aclaratorio</h4>
+    </div>
+</div>
+    
+
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+<script>
+let dia_numero=document.getElementById("dia_numero").textContent;
+console.log(dia_numero)
+if (dia_numero=="1")
+{
+    document.getElementById("los").textContent=""
+    document.getElementById("dias").textContent="día"
+}
+    let mesElement = document.getElementById("mes_texto");
+
+if (mesElement.textContent == "1") {
+    mesElement.textContent = "ENERO";
+} else if (mesElement.textContent == "2") {
+    mesElement.textContent = "FEBRERO";
+} else if (mesElement.textContent == "3") {
+    mesElement.textContent = "MARZO";
+} else if (mesElement.textContent == "4") {
+    mesElement.textContent = "ABRIL";
+} else if (mesElement.textContent == "5") {
+    mesElement.textContent = "MAYO";
+} else if (mesElement.textContent == "6") {
+    mesElement.textContent = "JUNIO";
+} else if (mesElement.textContent == "7") {
+    mesElement.textContent = "JULIO";
+} else if (mesElement.textContent == "8") {
+    mesElement.textContent = "AGOSTO";
+} else if (mesElement.textContent == "9") {
+    mesElement.textContent = "SEPTIEMBRE";
+} else if (mesElement.textContent == "10") {
+    mesElement.textContent = "OCTUBRE";
+} else if (mesElement.textContent == "11") {
+    mesElement.textContent = "NOVIEMBRE";
+} else if (mesElement.textContent == "12") {
+    mesElement.textContent = "DICIEMBRE";
+}
+
+$(document).ready(function() {
+    // Selecciona todos los elementos y recórrelos
+    $('*').each(function() {
+        // Verifica si el innerHTML es exactamente "None"
+        if ($(this).html().trim() === "None") {
+            $(this).html("-");
+        }
+    });
+});
+
+</script>
+</html>

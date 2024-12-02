@@ -1,0 +1,47 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Carga Usuarios Masiva{% endblock %}
+
+{% block content %}
+<div class="container d-flex align-items-center justify-content-center">
+    <div class="text-center">
+        <h2 class="mb-4"id='titulo'>Carga Masiva de Usuarios</h2>
+        <h5 hidden id='cargando'>Cargando usuarios</h5>
+        <h5 hidden id='cargando2'>No abandone la página</h5>
+        <form method="post" enctype="multipart/form-data" class="form">
+            {% csrf_token %}
+            <div class="mb-3" style="position: relative;">
+                <label for="csv_file" class="form-label">
+                    <h5>Seleccionar archivo CSV</h5>
+                </label>
+                <input type="file" class="form-control" name="csv_file" id="csv_file" accept=".csv" required>
+                <br>
+                <button id='botonSubir' type="submit" class="btn btn-primary" onclick='subir()'>
+                    <span class="text-uppercase">Subir Archivo</span>
+                </button>
+                <div id='loading' class="spinner-border text-dark" role="status"hidden>
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+function subir(){
+    if (document.getElementById('csv_file').value.length > 0)
+    {
+        document.getElementById('loading').hidden=false;
+        document.getElementById('botonSubir').hidden=true;
+        document.getElementById('csv_file').hidden=true;
+        document.getElementById('csv_file').previousElementSibling.hidden=true;
+        document.getElementById('cargando').hidden=false;
+        document.getElementById('cargando2').hidden=false;
+        document.getElementById('titulo').hidden=true;
+    }
+    else
+    {
+        console.log('xD');
+    }
+}
+</script>    
+{% endblock %}

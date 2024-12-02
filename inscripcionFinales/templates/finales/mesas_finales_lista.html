@@ -1,0 +1,9 @@
+{% extends 'base/base.html' %}
+{% block title %}Mesas Finales Disponibles{% endblock %}
+{% block content %}
+<h1>Mesas Finales Disponibles</h1>
+{% for mesa_final in mesas_finales %}
+    <p>{{ mesa_final.materia }} - {{ mesa_final.llamado }}</p>
+    <a href="{% url 'inscribir_mesa_final' %}">Inscribirse</a>
+{% endfor %}
+{% endblock %}

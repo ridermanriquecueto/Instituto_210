@@ -1,0 +1,90 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Inscripcion Final{% endblock %}
+
+{% block content %}
+{% if request.user.is_staff or request.user.is_superuser or request.user.is_admin %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inscripción Final</title>
+    <style>
+        body {
+            overflow-y:hidden;
+          }
+    </style>  
+</head>
+<body>
+    <h1>Inscripción Final</h1>
+    <div class="card" style="background-color: #d7d1dc">
+        <div class="card-body">     
+    <form id="formulario" method="post" style="font-size: 1.9em;">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <script>
+            document.getElementById("id_aprobada").hidden=true
+            document.getElementById("id_aprobada").previousElementSibling.hidden=true
+        </script>
+        <div id="message-popup" style="display:none;">
+            <p id="message-text"></p>
+        </div> 
+        <br>
+        <button id="envio_formulario"class="btn btn-primary" type="submit" style="margin-left: 90px;">Inscribirse</button>
+    </form>
+    {% else %}
+
+    <div class="text-center">
+        <img src="/static/imagenes/error403.jpg" class="rounded"></img>
+        <br>
+      <h3>No deberías estar acá. Para volver, <a href="/">hace click acá</a></h3>
+    </div>
+</div>
+</div>
+    {% endif %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#formulario').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "inscripcionFinal" %}',
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function(response) {
+                if (response.status === 'nose') {
+                    $('#message-text').css('color', 'red');
+                    $('#message-text').text(response.message);
+                    $('#message-popup').show();
+                    setTimeout(function() {
+                        $('#message-popup').hide();
+                    }, 3000);  // El mensaje desaparecerá después de 3 segundos
+                }
+                else if (response.status==='success')
+                {
+                    $('#message-text').css('color', 'green');
+                    $('#message-text').text(response.message);
+                    $('#message-popup').show();
+                }
+                else if (response.status=== 'duplicado')
+                {   
+                    $('#message-text').css('color', 'red');
+                    $('#message-text').text(response.message);
+                    $('#message-popup').show();
+                    setTimeout(function() {
+                        $('#message-popup').hide();
+                    }, 3000); 
+                }       
+            },
+            error: function(xhr, errmsg, err) {
+                document.getElementById("formulario").submit()
+            }
+        });
+    });
+});
+
+
+</script>
+    {%endblock%}
+</body>
+</html>

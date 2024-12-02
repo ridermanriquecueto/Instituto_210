@@ -1,0 +1,67 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Alta de Mesa Final{% endblock %}
+
+{% block content %}
+    <h1>Alta de Mesa Final</h1>
+    <div class="card" style="background-color: #d7d1dc">
+        <div class="card-body">      
+    <form id='formulario'method="post" style="font-size: 1.9em;">
+        {% csrf_token %}
+        <div class="mb-3 fs-5">
+            <label for="{{ form.materia.id_for_label }}">Materia:</label>
+            {{ form.materia }}
+        </div>
+
+        <div class="mb-3 fs-5">
+            <label for="{{ form.llamado.id_for_label }}">Llamado:</label>
+            {{ form.llamado }}
+        </div>
+        <div id="message-popup" style="display:none;">
+            <p id="message-text"></p>
+        </div> 
+        <br>
+        <button type="submit" class="btn btn-primary" style="margin-left: 85px;">Guardar</button>
+    </form>
+
+<style>
+    body {
+        overflow-y:hidden;
+      }
+</style> 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#formulario').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '{% url "altaMesa" %}',
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 'error') {
+                        $('#message-text').css('color', 'red');
+                        $('#message-text').text(response.message);
+                        $('#message-popup').show();
+                        setTimeout(function() {
+                            $('#message-popup').hide();
+                        }, 3000);  // El mensaje desaparecerá después de 3 segundos
+                    } else if (response.status === 'success') {
+                        // Redirigir a la página de lista de mesas
+                        window.location.href = '{% url "list_mesa" %}';
+                    }
+                },
+                error: function(xhr, errmsg, err) {
+                    // Manejar el error aquí sin enviar el formulario de nuevo
+                    $('#message-text').css('color', 'Green');
+                    $('#message-text').text('La mesa se creó correctamente.');
+                    $('#message-popup').show();
+                }
+            });
+        });
+    });
+
+
+</script>
+{% endblock %}

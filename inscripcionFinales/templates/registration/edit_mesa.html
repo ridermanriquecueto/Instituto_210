@@ -1,0 +1,77 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Editar Mesa{% endblock %}
+
+{% block content %}
+{% load inscripcionfinales_extras %}
+{% if request.user.is_staff or request.user.is_superuser or request.user.admin %}
+<div id="edit-mesa"> 
+  <form method="POST" class="form">
+      <div class="edit-rectangulo1">
+          {% csrf_token %}
+          <p class="text-center form-item">
+            <label for="id_mesa" class="Nu">Materia:</label>
+            <br>
+            <span hidden>
+            {{ form.materia }}
+            </span>
+          </p>
+          <h5 id='nombreMateria' style='text-align:center'>
+          </h5>
+          <p class="text-center form-item">
+            <label for="id_llamado">Llamado:</label>
+            <br>
+            <input type="date" class="form-edit_profile" id='retroll_llamado' name="llamado">
+            {{ form.llamado }}
+            <script>
+              document.getElementById('nombreMateria').innerHTML=document.getElementById("id_materia").options[document.getElementById("id_materia").selectedIndex].innerHTML
+              document.getElementById("id_llamado").hidden=true
+              document.getElementById("retroll_llamado").value = document.getElementById("id_llamado").value
+              function guarda_fecha()
+              {
+                document.getElementById("id_llamado").value = document.getElementById("retroll_llamado").value;
+              }
+            </script>
+          </p>
+          <p>
+            <label for="id_llamado">Inscripcion Abierta:</label>
+            {{form.inscripcionAbierta}}
+          </p>
+        </div>
+
+        <div class = "edit-rectangulo2">
+          <div class="logo-edit-user only-lt">
+            <img src="/static/imagenes/SIMEF.png" style="height: 50%;">
+          </div>
+          <div class="botones-edituser" style="margin-top:-200px">
+            <button onclick="guarda_fecha()" type="submit" class="btn btn-blue" style="transition: 0.6s">Guardar</button>
+
+          <div id="volver_usuario">
+            <a href="/mesas_lista/" style="font-size: 20px; text-decoration: none">Volver a mesas</a>
+          </div>
+        </div>
+    </form>
+</div>
+
+<style>
+  @media only screen and (max-width: 600px) {
+    .edit-rectangulo1 {
+      width: 70%;
+    }
+    .edit-rectangulo2 {
+      margin-top: 50%;
+      margin-right: 10%;
+    }
+  }
+</style>
+
+
+{%else%}
+<div class="text-center">
+  <img src="/static/imagenes/error403.jpg" class="rounded"></img>
+<h3>No deberías estar acá. Para volver, <a href="/">hace click acá</a></h3>
+</div>
+{%endif%}
+
+{% endblock %}
+

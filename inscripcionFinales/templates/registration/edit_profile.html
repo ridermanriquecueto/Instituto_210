@@ -1,0 +1,160 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Editar usuario{% endblock %}
+
+{% block content %}
+{% load inscripcionfinales_extras %}
+{% if request.path == "/edit_user/"|concatenate:request.user.id or request.user.is_staff or request.user.is_superuser or request.user.admin %}
+<div id="edit-user"> 
+  <form method="POST" class="form">
+      <div class="edit-rectangulo1">
+          {% csrf_token %}
+          <p class="text-center form-item">
+            <label for="id_username" class="Nu">Nombre de Usuario:</label>
+            <br>
+            {{ form.username }}
+            {% if form.username.errors %}
+                <div id="register-error">
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <p>El usuario ya está en uso.</p>
+                  </div>
+                </div>
+            {%endif%}
+          </p>
+          {% if request.user.is_staff or request.user.is_superuser or request.user.is_admin %}
+            <p class="text-center form-item">
+              <label for="id_username">Nombre Completo:</label>
+              <br>  
+              {{ form.nombre_completo }}
+            </p>
+            <p class="text-center form-item">
+              <label for="id_username">DNI:</label>
+              <br>
+              {{ form.dni }}
+              {% if form.dni.errors %}
+              <div id="register-error">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  {{form.dni.errors}}
+                </div>
+              </div>
+              {%endif%}
+            </p>
+          {% endif %}
+          <p class="text-center form-item">
+            <label for="id_fecha_nac">Fecha de nacimiento:</label>
+            <br>
+            <input type="date" class="form-edit_profile" id='retroll_fecha_nac' name="fecha_nac">
+            {{ form.fecha_nac }}
+            <script>
+              document.getElementById("id_fecha_nac").hidden=true
+              document.getElementById("retroll_fecha_nac").value = document.getElementById("id_fecha_nac").value
+              function guarda_fecha()
+              {
+                document.getElementById("id_fecha_nac").value = document.getElementById("retroll_fecha_nac").value;
+              }
+            </script>
+            {% if form.fecha_nac.errors %}
+            <div id="register-error">
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <p>Fecha de nacimiento mal ingresada, verifique formato. dd/mm/aaaa.</p>
+              </div>
+            </div>
+            {%endif%}
+          </p>
+          <p class="text-center form-item">
+            <label for="id_direccion">Dirección:</label>
+            <br>
+            {{ form.direccion }}
+          </p>
+          <p class="text-center form-item">
+            <label for="id_localidad">Localidad:</label>
+            <br>
+            {{ form.localidad }}
+          </p>
+          <p class="text-center form-item">
+            <label for="id_ciudad">Ciudad:</label>
+            <br>
+            {{ form.ciudad }}
+          </p>
+          <p class="text-center form-item">
+            <label for="id_nacionalidad">Nacionalidad:</label>
+            <br>
+            {{ form.nacionalidad }}
+          </p>
+          <p class="text-center form-item">
+            <label for="id_telefono_1">Telefono:</label>
+            <br>
+            {{ form.telefono_1 }}
+            {% if form.telefono_1.errors %}
+            <div id="register-error">
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                {{form.telefono_1.errors}}
+              </div>
+            </div>
+            {%endif%}
+          </p>
+          <p class="text-center form-item">
+            <label for="id_telefono_2">Celular:</label>
+            <br>
+            {{ form.telefono_2 }}
+            {% if form.telefono_2.errors %}
+            <div id="register-error">
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                {{form.telefono_2.errors}}
+              </div>
+            </div>
+            {%endif%}
+          </p>
+          <p class="text-center form-item">
+            <label for="id_estado_civil">Estado civil:</label>
+            <br>
+            {{ form.estado_civil }}
+          </p>
+          <p class="text-center form-item last-form-item">
+            <label for="id_sexo">Sexo:</label>
+            <br>
+            {{ form.sexo }}
+          </p>
+        </div>
+
+        <div class = "edit-rectangulo2">
+          <div class="logo-edit-user only-lt">
+            <img src="/static/imagenes/SIMEF.png" style="height: 50%;">
+          </div>
+          <div class="botones-edituser" style="margin-top:-200px">
+            <button onclick="guarda_fecha()" type="submit" class="btn btn-blue" style="transition: 0.6s">Guardar</button>
+
+          <div id="volver_usuario">
+            <a href="/user_list/" style="font-size: 20px; text-decoration: none">Volver a usuarios</a>
+          </div>
+        </div>
+    </form>
+</div>
+
+<style>
+  @media only screen and (max-width: 600px) {
+    .edit-rectangulo1 {
+      width: 70%;
+    } 
+    .edit-rectangulo2 {
+      margin-top: 50%;
+      margin-right: 10%;
+    } 
+  }
+</style>
+
+
+{%else%}
+<div class="text-center">
+  <img src="/static/imagenes/error403.jpg" class="rounded"></img>
+<h3>No deberías estar acá. Para volver, <a href="/">hace click acá</a></h3>
+</div>
+{%endif%}
+
+{% endblock %}
+

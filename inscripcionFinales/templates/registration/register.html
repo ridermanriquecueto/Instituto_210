@@ -1,0 +1,160 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Registro de usuario{% endblock %}
+
+{% block content %}
+
+{% if request.user.is_staff or request.user.is_superuser or request.user.admin %}
+
+<div id="registracion">  
+    <form method="POST" class="form">
+        <div class="reg-rectangulo1">
+            <p class = "text-center reg-title">
+              Completar los siguientes campos:
+            </p>
+            {% csrf_token %}
+
+            {% if form.errors %}
+            <div id="register-error">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  <p>No se pudo enviar el formulario. Verifique los datos por favor.</p>
+                </div>
+            </div>
+            {% endif %}
+
+            <p class = "text-center" style="margin-top: -75px">
+                <label for="id_dni">DNI:</label>
+                <br>
+                {{ form.dni }}
+                {% if form.dni.errors %}
+                <div id="register-error">
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    {{form.dni.errors}}
+                  </div>
+                </div>
+                {%endif%}
+ <p class = "text-center" style="margin-top: -75px">
+                <label for="id_nombres">Nombre Completo:</label>
+                <br>
+                {{ form.nombre_completo }}
+            </p>
+            <p class = "text-center" style="margin-top: -75px">
+                <label for="id_email">Email:</label>
+                <br>
+                {{ form.email }}
+                {% if form.email.errors %}
+                <div id="register-error">
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <p>El email ya existe.</p>
+                  </div>
+                </div>
+                {%endif%}
+            </p>
+            <p class = "text-center" style="margin-top: -75px">
+              <label for="id_rol">Rol:</label>
+              <br>
+              {{ form.rol }}
+            </p>
+            {% if form.rol.value == 'estudiante' %}
+                <p class="text-center" style="margin-top: -75px">
+                    <label for="id_matricula">Matrícula:</label>
+                    <br>
+                    {{ form.matricula }}
+                </p>
+            {% elif form.rol.value == 'profesor' %}
+                <p class="text-center" style="margin-top: -75px">
+                    <label for="id_especialidad">Especialidad:</label>
+                    <br>
+                    {{ form.especialidad }}
+                </p>
+            {% elif form.rol.value == 'directivo' %}
+                <p class="text-center" style="margin-top: -75px">
+                    <label for="id_cargo">Cargo:</label>
+                    <br>
+                    {{ form.cargo }}
+                </p>
+            {% elif form.rol.value == 'preceptor' %}
+                <p class="text-center" style="margin-top: -75px">
+                    <label for="id_area">Área:</label>
+                    <br>
+                    {{ form.area }}
+                </p>
+            {% endif %}
+            
+            
+            <p class = "text-center" style="margin-top: -75px">
+              <label for="id_carrera">Carrera:</label>
+              <br>
+              {{ form.carrera }}
+            </p>                     
+                      
+        </div>
+
+        <div class="reg-rectangulo2">
+            <div class="logo-registracion only-lt">
+                <img src="/static/imagenes/SIMEF.png" class="logo-reg only-lt" style="width: 300px;height: 320px;">
+            </div>
+            <div class="botones-registracion">
+              <button type="submit" class="btn btn-blue fs-6" style="transition: 0.6s">Registrar</button>
+               <div id="volver_usuario">
+              <a class="fs-5" href="/user_list/" style="text-decoration: none">Volver a Usuarios</a>
+              </div>
+            </div>
+        </div>   
+    </form>  
+</div>
+
+<style>
+@media only screen and (max-width: 600px) {
+  .reg-rectangulo1 {
+          width: 95%;
+          margin-left: 8%;
+          margin-top: 0%;
+        }
+   .text-center {
+    font-size: 15px;
+   }
+   body {
+    overflow-y:hidden;
+  }
+  .form {
+    padding-bottom: 85px;
+  }
+
+ }
+</style>
+
+{% else %}
+
+<div class="card">
+  <h3>Ud no tiene los permisos para acceder a esta página</h3>
+<div class="text-center">
+    <img src="/static/imagenes/error403.png" class=""></img>
+  <h3>No deberías estar acá. Para volver, <a href="/">hace click acá</a></h3>
+</div>
+<!-- Bloque de script para mostrar/ocultar campos según el rol -->
+<script>
+  function toggleFieldsBasedOnRole() {
+      var rol = document.getElementById('id_rol').value.toLowerCase();
+      var matriculaField = document.getElementById('id_matricula');
+      var especialidadField = document.getElementById('id_especialidad');
+      var cargoField = document.getElementById('id_cargo');
+      var areaField = document.getElementById('id_area');
+
+      matriculaField.style.display = rol === 'estudiante' ? 'block' : 'none';
+      especialidadField.style.display = rol === 'profesor' ? 'block' : 'none';
+      cargoField.style.display = rol === 'directivo' ? 'block' : 'none';
+      areaField.style.display = rol === 'preceptor' ? 'block' : 'none';
+  }
+
+  window.onload = toggleFieldsBasedOnRole;
+  document.getElementById('id_rol').addEventListener('change', toggleFieldsBasedOnRole);
+</script>
+
+{%endif%}
+
+{% endblock %}
+
